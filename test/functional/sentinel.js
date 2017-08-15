@@ -10,9 +10,10 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master'
       });
 
@@ -26,9 +27,9 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1'
+        }],
         name: 'master'
       });
 
@@ -42,10 +43,13 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         name: 'master'
       });
     });
@@ -53,10 +57,13 @@ describe('sentinel', function () {
     it('should call sentinelRetryStrategy when all sentinels are unreachable', function (done) {
       var t = 0;
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         sentinelRetryStrategy: function (times) {
           expect(times).to.eql(++t);
           var sentinel = new MockServer(27380);
@@ -72,10 +79,13 @@ describe('sentinel', function () {
 
     it('should raise error when all sentinel are unreachable and retry is disabled', function (done) {
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         sentinelRetryStrategy: null,
         name: 'master'
       });
@@ -95,6 +105,7 @@ describe('sentinel', function () {
       });
 
       var pending = 3;
+
       function finish() {
         if (!--pending) {
           redis.disconnect();
@@ -118,9 +129,10 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master'
       });
     });
@@ -142,9 +154,10 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master'
       });
     });
@@ -157,9 +170,10 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master',
         sentinelRetryStrategy: null,
         lazyConnect: true
@@ -190,10 +204,13 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         name: 'master'
       });
     });
@@ -222,10 +239,13 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         name: 'master'
       });
     });
@@ -235,7 +255,9 @@ describe('sentinel', function () {
     it('should connect to the slave successfully', function (done) {
       var sentinel = new MockServer(27379, function (argv) {
         if (argv[0] === 'sentinel' && argv[1] === 'slaves' && argv[2] === 'master') {
-          return [['ip', '127.0.0.1', 'port', '17381', 'flags', 'slave']];
+          return [
+            ['ip', '127.0.0.1', 'port', '17381', 'flags', 'slave']
+          ];
         }
       });
       var slave = new MockServer(17381);
@@ -247,12 +269,17 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master',
         role: 'slave',
-        preferredSlaves: [{ ip: '127.0.0.1', port: '17381', prio: 10 }]
+        preferredSlaves: [{
+          ip: '127.0.0.1',
+          port: '17381',
+          prio: 10
+        }]
       });
     });
 
@@ -275,26 +302,41 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master',
         role: 'slave',
         // for code coverage (sorting, etc), use multiple valid values that resolve to prio 1
-        preferredSlaves: [,
-          { ip: '127.0.0.1', port: '11111', prio: 100 },
-          { ip: '127.0.0.1', port: '17381', prio: 1 },
-          { ip: '127.0.0.1', port: '22222', prio: 100 },
-          { ip: '127.0.0.1', port: '17381' },
-          { ip: '127.0.0.1', port: '17381' }
-        ]
+        preferredSlaves: [, {
+          ip: '127.0.0.1',
+          port: '11111',
+          prio: 100
+        }, {
+          ip: '127.0.0.1',
+          port: '17381',
+          prio: 1
+        }, {
+          ip: '127.0.0.1',
+          port: '22222',
+          prio: 100
+        }, {
+          ip: '127.0.0.1',
+          port: '17381'
+        }, {
+          ip: '127.0.0.1',
+          port: '17381'
+        }]
       });
     });
 
     it('should connect to the slave successfully based on preferred slave filter function', function (done) {
       var sentinel = new MockServer(27379, function (argv) {
         if (argv[0] === 'sentinel' && argv[1] === 'slaves' && argv[2] === 'master') {
-          return [['ip', '127.0.0.1', 'port', '17381', 'flags', 'slave']];
+          return [
+            ['ip', '127.0.0.1', 'port', '17381', 'flags', 'slave']
+          ];
         }
       });
       // only one running slave, which we will prefer
@@ -307,15 +349,16 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master',
         role: 'slave',
-        preferredSlaves: function(slaves){
-          for (var i = 0; i < slaves.length; i++){
+        preferredSlaves: function (slaves) {
+          for (var i = 0; i < slaves.length; i++) {
             var slave = slaves[i];
-            if (slave.ip == '127.0.0.1' && slave.port =='17381'){
+            if (slave.ip == '127.0.0.1' && slave.port == '17381') {
               return slave;
             }
           }
@@ -340,10 +383,13 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         name: 'master',
         role: 'slave'
       });
@@ -352,7 +398,9 @@ describe('sentinel', function () {
     it('should connect to the next sentinel if the role is wrong', function (done) {
       var sentinel = new MockServer(27379, function (argv) {
         if (argv[0] === 'sentinel' && argv[1] === 'slaves' && argv[2] === 'master') {
-          return [['ip', '127.0.0.1', 'port', '17381', 'flags', 'slave']];
+          return [
+            ['ip', '127.0.0.1', 'port', '17381', 'flags', 'slave']
+          ];
         }
       });
 
@@ -373,10 +421,13 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' },
-          { host: '127.0.0.1', port: '27380' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }, {
+          host: '127.0.0.1',
+          port: '27380'
+        }],
         name: 'master',
         role: 'slave'
       });
@@ -414,9 +465,48 @@ describe('sentinel', function () {
       });
 
       var redis = new Redis({
-        sentinels: [
-          { host: '127.0.0.1', port: '27379' }
-        ],
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
+        name: 'master'
+      });
+    });
+
+    it('should switch to new master ASAP when recieved sentinel pmessage +switch-master', function (done) {
+      var sentinel = new MockServer(27379);
+      sentinel.handler = function (argv) {
+        if (argv[0] === 'sentinel' && argv[1] === 'get-master-addr-by-name') {
+          return ['127.0.0.1', '17380'];
+        } else if (argv[0] === 'sentinel' && argv[1] === 'sentinels' && argv[2] === 'master') {
+          return [
+            ['ip', '127.0.0.1', 'port', '17380']
+          ];
+        } else if (argv[0] === 'psubscribe' && argv[1] === '+switch-master') {
+          var newMaster = new MockServer(17381, function () {
+            done();
+          });
+
+          sentinel.handler = function (argv) {
+            if (argv[0] === 'sentinel' && argv[1] === 'get-master-addr-by-name') {
+              return ['127.0.0.1', '17381'];
+            }
+          };
+
+          sentinel.broadcast([
+            "pmessage",
+            "+switch-master",
+            "master 127.0.0.1 17380 127.0.0.1 17381"
+          ]);
+        }
+      };
+      var master = new MockServer(17380);
+
+      var redis = new Redis({
+        sentinels: [{
+          host: '127.0.0.1',
+          port: '27379'
+        }],
         name: 'master'
       });
     });
